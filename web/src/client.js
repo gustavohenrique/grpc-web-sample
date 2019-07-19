@@ -12,7 +12,10 @@ new Vue({
   methods: {
     readAll: function() {
       const req = new SearchRequest();
-      const metadata = {'custom-header-1': 'value1'};
+      const metadata = {
+        login: 'gustavo',
+        password: 'admin'
+      }
       let self = this;
       client.readAll(req, metadata, (err, res) => {
         if (err) {

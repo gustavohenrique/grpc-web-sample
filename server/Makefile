@@ -1,4 +1,4 @@
-run: setup
+run:
 	go run main.go
 
 setup:

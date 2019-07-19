@@ -2,7 +2,7 @@ version: "3"
 services:
   server:
     image: golang:alpine
-    command: sh -c "apk add --update make git && make run"
+    command: sh -c "apk add --update make git && make setup && make run"
     container_name: server
     hostname: server
     working_dir: "/src"

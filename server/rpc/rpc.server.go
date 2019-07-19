@@ -33,7 +33,11 @@ func NewServer(port string) *RpcServer {
 	}
 	return &RpcServer{
 		listener: listener,
-		Grpc:     grpc.NewServer(grpc.KeepaliveEnforcementPolicy(kaep), grpc.KeepaliveParams(kasp)),
+		Grpc: grpc.NewServer(
+			grpc.KeepaliveEnforcementPolicy(kaep),
+			grpc.KeepaliveParams(kasp),
+			grpc.UnaryInterceptor(UnaryInterceptor),
+		),
 	}
 }
 

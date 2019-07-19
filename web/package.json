@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --progress --mode production --output main.js src/client.js",
+    "start": "npm run build && caddy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gustavo Henrique",
