@@ -1,0 +1,21 @@
+{
+  "name": "web",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --progress --mode production --output main.js src/client.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gustavo Henrique",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.1",
+    "google-closure-library": "^20190709.0.0",
+    "google-protobuf": "^3.9.0",
+    "grpc": "^1.22.2",
+    "grpc-web": "^1.0.5",
+    "webpack": "^4.36.1",
+    "webpack-cli": "^3.3.6"
+  }
+}

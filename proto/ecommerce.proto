@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package ecommerce;
+
+service ProductService {
+  rpc ReadOne(ProductRequest) returns (ProductResponse) {}
+  rpc ReadAll(SearchRequest) returns (ProductsResponse) {}
+}
+
+message Product {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  int32 price_in_cents = 4;
+}
+
+message ProductRequest {
+  Product product = 1;
+}
+
+message ProductResponse {
+  Product product = 1;
+}
+
+message ProductsResponse {
+  repeated Product products = 1;
+}
+
+message SearchRequest {
+}

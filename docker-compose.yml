@@ -1,0 +1,26 @@
+version: "3"
+services:
+  server:
+    image: golang:alpine
+    command: sh -c "apk add --update make git && make run"
+    container_name: server
+    hostname: server
+    working_dir: "/src"
+    volumes:
+      - "$PWD/server:/src"
+    ports:
+      - "5000:5000"
+    expose:
+      - "5000"
+  
+  envoy:
+    image: envoyproxy/envoy
+    container_name: envoy
+    command: envoy -c /etc/envoy.yaml
+    volumes:
+      - "./envoy.yaml:/etc/envoy.yaml"
+    ports:
+      - "9901:9901"
+      - "8080:8080"
+    depends_on:
+      - server
