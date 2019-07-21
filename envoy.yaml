@@ -1,7 +1,9 @@
 admin:
   access_log_path: /tmp/admin_access.log
   address:
-    socket_address: { address: 0.0.0.0, port_value: 9901 }
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
 
 static_resources:
   listeners:
@@ -9,20 +11,38 @@ static_resources:
     address:
       socket_address:
         address: 0.0.0.0
-        port_value: 8080
+        port_value: 443
         protocol: TCP
     filter_chains:
-    - filters:
+    - tls_context:
+        common_tls_context:
+          tls_certificates:
+          - certificate_chain:
+              filename: "/etc/cert.pem"
+            private_key:
+              filename: "/etc/key.pem"
+          alpn_protocols: [ "h2,http/1.1" ]
+      filters:
       - name: envoy.http_connection_manager
         typed_config:
           "@type": type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
+          access_log:
+            - name: envoy.http_grpc_access_log
+              config:
+                common_config:
+                  log_name: "products"
+                  grpc_service:
+                    envoy_grpc:
+                      cluster_name: "grpc_service"
           codec_type: auto
           stat_prefix: ingress_http
           route_config:
             name: local_route
             virtual_hosts:
-            - name: local_service
-              domains: ["*"]
+            - name: backend
+              domains:
+              - "server.mydomain.io"
+              - "mydomain.io"
               cors:
                 allow_origin:
                 - "*"
@@ -35,16 +55,17 @@ static_resources:
                     numerator: 100
                     denominator: HUNDRED
               routes:
-              - match: { prefix: "/" }
+              - match:
+                  prefix: "/"
                 route:
-                  cluster: product_service
+                  cluster: grpc_service
                   max_grpc_timeout: 0s
           http_filters:
           - name: envoy.grpc_web
           - name: envoy.cors
           - name: envoy.router
   clusters:
-  - name: product_service
+  - name: grpc_service
     connect_timeout: 0.25s
     type: LOGICAL_DNS
     http2_protocol_options: {}

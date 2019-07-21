@@ -1,7 +1,7 @@
 import { SearchRequest, ProductsResponse } from './ecommerce_pb';
 import { ProductServiceClient } from './ecommerce_grpc_web_pb';
 
-const url = 'http://localhost:8080';
+const url = 'https://mydomain.io';
 const client = new ProductServiceClient(url);
 
 new Vue({

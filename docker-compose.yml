@@ -19,8 +19,10 @@ services:
     command: envoy -c /etc/envoy.yaml
     volumes:
       - "./envoy.yaml:/etc/envoy.yaml"
+      - "./cert.pem:/etc/cert.pem"
+      - "./key.pem:/etc/key.pem"
     ports:
       - "9901:9901"
-      - "8080:8080"
+      - "443:443"
     depends_on:
       - server

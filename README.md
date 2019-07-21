@@ -56,3 +56,11 @@ You can serve and point browser to `web/index.html` or use grpcurl:
 grpcurl -proto proto/ecommerce.proto -plaintext -v localhost:8080 ecommerce.ProductService/ReadAll
 ```
 
+## Generate self signed certificate
+
+```sh
+go run $GOROOT/src/crypto/tls/generate_cert.go --host mydomain.io
+
+openssl req -nodes -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+```
+
