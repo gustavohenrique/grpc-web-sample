@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+	"fmt"
 
 	"google.golang.org/grpc"
 
@@ -27,6 +28,7 @@ func (this *ProductServer) ReadOne(ctx context.Context, req *pb.ProductRequest) 
 }
 
 func (this *ProductServer) ReadAll(ctx context.Context, req *pb.SearchRequest) (*pb.ProductsResponse, error) {
+	fmt.Println("#ReadAll called.")
 	products := []*pb.Product{
 		&pb.Product{Id: 1, Title: "P1"},
 	}

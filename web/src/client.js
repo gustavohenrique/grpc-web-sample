@@ -1,7 +1,7 @@
 import { SearchRequest, ProductsResponse } from './ecommerce_pb';
 import { ProductServiceClient } from './ecommerce_grpc_web_pb';
 
-const url = 'https://mydomain.io';
+const url = 'https://mydomain.io:4443';
 const client = new ProductServiceClient(url);
 
 new Vue({
@@ -14,7 +14,8 @@ new Vue({
       const req = new SearchRequest();
       const metadata = {
         login: 'gustavo',
-        password: 'admin'
+        password: 'admin',
+        'Access-Control-Allow-Origin': '*'
       }
       let self = this;
       client.readAll(req, metadata, (err, res) => {
