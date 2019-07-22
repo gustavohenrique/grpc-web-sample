@@ -1,61 +1,74 @@
 version: "3"
 services:
-  web:
-    image: abiosoft/caddy
-    container_name: web
-    hostname: mydomain.io
-    volumes:
-      - "./Caddyfile:/etc/Caddyfile"
-      - "./web:/web"
-      - "./cert.pem:/cert.pem"
-      - "./key.pem:/key.pem"
-    working_dir: "/web"
-    ports:
-      - "80:80"
-      - "443:443"
+#  web:
+#    image: abiosoft/caddy
+#    container_name: web
+#    hostname: mydomain.io
+#    volumes:
+#      - "./Caddyfile:/etc/Caddyfile"
+#      - "./web:/web"
+#      - "./cert.pem:/cert.pem"
+#      - "./key.pem:/key.pem"
+#    working_dir: "/web"
+#    ports:
+#      - "80:80"
+      # - "443:443"
 
-  server:
+  server1:
     image: golang:alpine
     command: sh -c "apk add --update make git && make setup && make run"
-    container_name: server
-    hostname: server
+    container_name: server1
+    hostname: server1
     working_dir: "/src"
+    environment:
+      - INSTANCE=server1
     volumes:
       - "$PWD/server:/src"
-    ports:
-      - "5000:5000"
     expose:
       - "5000"
 
-  envoy:
-    image: envoyproxy/envoy
-    container_name: envoy
-    hostname: envoy
-    command: envoy -c /etc/envoy.yaml
+  server2:
+    image: golang:alpine
+    command: sh -c "apk add --update make git && make setup && make run"
+    container_name: server2
+    hostname: server2
+    working_dir: "/src"
+    environment:
+      - INSTANCE=server2
     volumes:
-      - "./envoy.yaml:/etc/envoy.yaml"
-      - "./cert.pem:/etc/cert.pem"
-      - "./key.pem:/etc/key.pem"
+      - "$PWD/server:/src"
     expose:
-      - "4443"
-    ports:
-      - "9901:9901"
-      - "4443:4443"
-    depends_on:
-      - server
+      - "5000"
+
+#  envoy:
+#    image: envoyproxy/envoy
+#    container_name: envoy
+#    hostname: envoy
+#    command: envoy -c /etc/envoy.yaml
+#    volumes:
+#      - "./envoy.yaml:/etc/envoy.yaml"
+#      - "./cert.pem:/etc/cert.pem"
+#      - "./key.pem:/etc/key.pem"
+#    expose:
+#      - "4443"
+#    ports:
+#      - "9901:9901"
+#      - "4443:4443"
+#    depends_on:
+#      - server
 
   nginx:
     image: nginx
     container_name: nginx
-    hostname: mydomain.io
+    hostname: nginx
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf"
-      - "./nginx.default:/etc/nginx/conf.d/default.conf"
+      - "./nginx/common:/etc/nginx/common"
+      - "./nginx/conf.d:/etc/nginx/conf.d"
+      - "./nginx/keys:/ssl"
       - "./web:/usr/share/nginx/html"
-      - "./cert.pem:/etc/cert.pem"
-      - "./key.pem:/etc/key.pem"
-    # ports:
-      # - "80:80"
-      # - "443:443"
+    ports:
+      - "443:443"
     depends_on:
-      - server
+      - server1
+      - server2
+

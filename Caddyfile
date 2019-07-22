@@ -3,12 +3,10 @@ mydomain.io:443 {
     browse
     root /web
     log /dev/stdout
-    proxy /ecommerce.ProductService https://envoy:4443
 }
 
 mydomain.io:80 {
-    redir 301 {
-        if {scheme} not https
-        / https://{host}{uri}
-    }
+    browse
+    root /web
+    log /dev/stdout
 }
