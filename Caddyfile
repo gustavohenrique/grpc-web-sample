@@ -1,11 +1,11 @@
-mydomain.io:443 {
-    tls /cert.pem /key.pem
+:4343 {
+    tls /etc/caddy/ssl/cert.pem /etc/caddy/ssl/key.pem
     browse
     root /web
     log /dev/stdout
 }
 
-mydomain.io:80 {
+:8000 {
     browse
     root /web
     log /dev/stdout
