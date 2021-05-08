@@ -12,7 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.1",
-    "google-closure-library": "^20190709.0.0",
+    "google-closure-library": "^20200315.0.0",
     "google-protobuf": "^3.9.0",
     "grpc": "^1.22.2",
     "grpc-web": "^1.0.5",
